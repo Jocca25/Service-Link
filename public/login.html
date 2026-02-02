@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Service Link</title>
+  <link href="https://fonts.googleapis.com/css2?family=IM+FELL+Great+Primer+SC&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+  <header class="topo">
+    <div class="logo-box"></div>
+      <h1 class="logo">Service Link</h1>
+  </header>
+
+  <main>
+    <form id="login-form" class="caixa">
+      <input type="email" id="femail" name="femail" placeholder="Email" required />
+    
+      <input type="password" id="lpassword" name="lpassword" placeholder="Palavra-passe" required />
+    
+      <input class="entrar" type="submit" value="Entrar"/>
+      <button id="google-login-btn">
+        <img src="./img/googleicon.png" alt="Google" style="height: 20px; margin-right: 10px;">
+        Entrar com Google
+      </button>
+      <div class="texto-criar-conta">
+        Crie aqui a sua conta. <a class="criarconta" href="Homepage/criarconta.html">Criar conta</a>
+      </div>
+      
+    </form>
+  </main>
+
+<footer class="footer">
+    <h2>Os Nossos serivços</h2>
+    <h4>Sobre nós</h4>
+    <h4>Perguntas Frequentes</h4>
+    <h4>Política de Privacidade</h4>
+    <h4>Política de Devoluções</h4>
+    <h4>Termos de Serviço</h4>
+    <div class="footer_icons">
+        <a href="https://www.mbway.pt" target="_blank">
+            <img src="img/Logo_MBWay.svg.png" alt="Logo_MBWay" class="footer-img">
+          </a>
+          <a href="https://www.paypal.com/pt/home" target="_blank">
+            <img src="img/payment-platform-paypal.png" alt="Logo_paypal" class="footer-img">
+          </a>
+          <a href="https://www.mastercard.pt/pt-pt.html" target="_blank">
+            <img src="img/mastercard-symbol-03.jpg" alt="Logo_mastercard" class="footer-img">
+          </a>
+          <a href="https://www.visa.pt" target="_blank">
+            <img src="img/visa-icon-2048x1313-o6hi8q5l.png" alt="Logo_visa" class="footer-img">
+          </a>
+    </div>
+</footer> 
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDAAyIGIjFy08nnqDvz8KVCIlOtn_VN-4Q",
+      authDomain: "projeto-final-fcf92.firebaseapp.com",
+      projectId: "projeto-final-fcf92",
+      storageBucket: "projeto-final-fcf92.appspot.com",
+      appId: "1:373812357712:web:4ef138ecc6e43ca8773f55",
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    const loginForm = document.getElementById("login-form");
+
+    loginForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("femail").value;
+      const password = document.getElementById("lpassword").value;
+
+      try {
+        await auth.signInWithEmailAndPassword(email, password);
+        window.location.href = "Homepage/homepage.html";
+      } catch (error) {
+        if (error.code === "auth/user-not-found" || error.code === "auth/wrong-password") {
+          alert("Email ou password incorretos.");
+        } else {
+          alert("Erro ao tentar entrar: " + error.message);
+        }
+      }
+    });
+
+    document.getElementById("google-login-btn").addEventListener("click", async () => {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      try {
+        await auth.signInWithPopup(provider);
+        window.location.href = "Homepage/homepage.html";
+      } catch (error) {
+        alert("Falha no login com Google: " + error.message);
+      }
+    });
+  </script>
+</body>
+</html>

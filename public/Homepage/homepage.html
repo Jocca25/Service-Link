@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>Service Link</title>
+  <link rel="stylesheet" href="../css/homepage.css">
+
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+
+  <header class="topo">
+    <div class="logo-box">
+      <h1 class="logo">Service Link</h1>
+    </div>
+  </header>
+<main>
+  <div class="search-box">
+    <input type="text" placeholder="O que procura...">
+  </div>
+
+  <nav class="icons">
+    <a href="fotografo.html">
+      <span class="material-icons">photo_camera</span>
+      <p>Fotógrafo</p>
+    </a>
+    <a href="limpeza.html">
+      <span class="material-icons">cleaning_services</span>
+      <p>Limpeza</p>
+    </a>
+    <a href="construcao.html">
+      <span class="material-icons">construction</span>
+      <p>Construção</p>
+    </a>
+    <a href="canalizador.html">
+      <span class="material-icons">plumbing</span>
+      <p>Canalizador</p>
+    </a>
+    <a href="electricista.html">
+      <span class="material-icons">electrical_services</span>
+      <p>Electricista</p>
+    </a>
+    <a href="cozinheiro.html">
+      <span class="material-icons">restaurant</span>
+      <p>Cozinheiro</p>
+    </a>
+    <a href="montar.html">
+      <span class="material-icons">weekend</span>
+      <p>Carpinteiro</p>
+    </a>
+  </nav>
+
+  <div class="mapa">
+    <img src="imagens/mapa.png" alt="Mapa com trabalhadores">
+  </div>
+</main>
+<footer class="footer">
+  <h2>Os Nossos serivços</h2>
+  <h4>Sobre nós</h4>
+  <h4>Perguntas Frequentes</h4>
+  <h4>Política de Privacidade</h4>
+  <h4>Política de Devoluções</h4>
+  <h4>Termos de Serviço</h4>
+  <div class="footer_icons">
+      <a href="https://www.mbway.pt" target="_blank">
+          <img src="../img/Logo_MBWay.svg.png" alt="Logo_MBWay" class="footer-img">
+        </a>
+        <a href="https://www.paypal.com/pt/home" target="_blank">
+          <img src="../img/payment-platform-paypal.png" alt="Logo_paypal" class="footer-img">
+        </a>
+        <a href="https://www.mastercard.pt/pt-pt.html" target="_blank">
+          <img src="../img/mastercard-symbol-03.jpg" alt="Logo_mastercard" class="footer-img">
+        </a>
+        <a href="https://www.visa.pt" target="_blank">
+          <img src="../img/visa-icon-2048x1313-o6hi8q5l.png" alt="Logo_visa" class="footer-img">
+        </a>
+  </div>
+</footer> 
+<script>
+  const services = {
+    "fotógrafo": "fotografo.html",
+    "fotografo": "fotografo.html",
+    "limpeza": "limpeza.html",
+    "construção": "construcao.html",
+    "construcao": "construcao.html",
+    "canalizador": "canalizador.html",
+    "electricista": "electricista.html",
+    "eletricista": "electricista.html",
+    "cozinheiro": "cozinheiro.html",
+    "carpinteira": "montar.html",
+    "carpinteiro": "montar.html"
+  };
+
+  document.querySelector('.search-box input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      const query = e.target.value.trim().toLowerCase();
+
+      if (services[query]) {
+        window.location.href = services[query];
+      } else {
+        alert("Serviço não encontrado. Tente outra palavra.");
+      }
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Service Link - Criar Conta</title>
+  <link href="https://fonts.googleapis.com/css2?family=IM+FELL+Great+Primer+SC&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+  <link rel="stylesheet" href="../css/criarconta.css" />
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDAAyIGIjFy08nnqDvz8KVCIlOtn_VN-4Q",
+      authDomain: "projeto-final-fcf92.firebaseapp.com",
+      projectId: "projeto-final-fcf92",
+      storageBucket: "projeto-final-fcf92.firebasestorage.app",
+      appId: "1:373812357712:web:4ef138ecc6e43ca8773f55",
+    };
+
+    firebase.initializeApp(firebaseConfig);
+  </script>
+</head>
+
+<body>
+  <header class="topo">
+    <div class="logo-box">
+      <h1 class="logo">Service Link</h1>
+    </div>
+  </header>
+
+  <main>
+    <div class="form-container">
+      <form id="signup-form">
+        <input type="text" id="nome" placeholder="Nome" required />
+        <input type="email" id="email" placeholder="Email" required />
+        <input type="text" id="morada" placeholder="Morada" required />
+        <input type="text" id="telemovel" placeholder="Telemóvel" required />
+        <input type="date" id="idade" required />
+        <input type="file" id="foto" accept="image/*" required />
+        <input type="password" id="password" placeholder="Password" required />
+
+        <div class="role-select">
+          <label><input type="radio" name="role" value="cliente" required /> Sou cliente</label>
+          <label><input type="radio" name="role" value="trabalhador" /> Sou trabalhador</label>
+          <button type="submit">Criar Conta</button><br />
+
+          <button id="google-login-btn" type="button">
+            <img src="../img/googleicon.png" alt="Google" style="height: 20px; margin-right: 10px;" />
+            Entrar com Google
+          </button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <h2>Os Nossos serivços</h2>
+    <h4>Sobre nós</h4>
+    <h4>Perguntas Frequentes</h4>
+    <h4>Política de Privacidade</h4>
+    <h4>Política de Devoluções</h4>
+    <h4>Termos de Serviço</h4>
+    <div class="footer_icons">
+      <a href="https://www.mbway.pt" target="_blank">
+        <img src="../img/Logo_MBWay.svg.png" alt="Logo_MBWay" class="footer-img" />
+      </a>
+      <a href="https://www.paypal.com/pt/home" target="_blank">
+        <img src="../img/payment-platform-paypal.png" alt="Logo_paypal" class="footer-img" />
+      </a>
+      <a href="https://www.mastercard.pt/pt-pt.html" target="_blank">
+        <img src="../img/mastercard-symbol-03.jpg" alt="Logo_mastercard" class="footer-img" />
+      </a>
+      <a href="https://www.visa.pt" target="_blank">
+        <img src="../img/visa-icon-2048x1313-o6hi8q5l.png" alt="Logo_visa" class="footer-img" />
+      </a>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const auth = firebase.auth();
+      const db = firebase.firestore();
+      const storage = firebase.storage();
+
+      const googleBtn = document.getElementById("google-login-btn");
+      const form = document.getElementById("signup-form");
+
+      // LOGIN COM GOOGLE
+      if (googleBtn) {
+        googleBtn.addEventListener("click", async () => {
+          const provider = new firebase.auth.GoogleAuthProvider();
+
+          try {
+            const result = await auth.signInWithPopup(provider);
+            const user = result.user;
+
+            const userDoc = await db.collection("Utilizadores").doc(user.uid).get();
+            if (!userDoc.exists) {
+              await db.collection("Utilizadores").doc(user.uid).set({
+                nome: user.displayName || "",
+                email: user.email,
+                fotoURL: user.photoURL || "",
+                tipo: "cliente",
+                criadoEm: firebase.firestore.FieldValue.serverTimestamp(),
+              });
+            }
+
+            alert("Login com Google efetuado com sucesso!");
+            window.location.href = "https://projeto-final-fcf92.web.app/Homepage/homepage.html";
+          } catch (error) {
+            console.error("Erro no login Google:", error);
+            alert("Falha no login com Google: " + error.message);
+          }
+        });
+      }
+
+      if (form) {
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const nome = document.getElementById("nome").value;
+          const email = document.getElementById("email").value;
+          const password = document.getElementById("password").value;
+          const idade = document.getElementById("idade").value;
+          const morada = document.getElementById("morada").value;
+          const telemovel = document.getElementById("telemovel").value;
+          const tipoConta = document.querySelector('input[name="role"]:checked')?.value;
+          const foto = document.getElementById("foto").files[0];
+
+          if (!tipoConta) {
+            alert("Por favor seleciona se és Cliente ou Trabalhador.");
+            return;
+          }
+
+          try {
+            form.querySelector("button").disabled = true;
+
+            const cred = await auth.createUserWithEmailAndPassword(email, password);
+            const user = cred.user;
+
+            await auth.currentUser.getIdToken(true);
+
+            console.log("UID autenticado:", auth.currentUser.uid);
+            console.log("UID da conta criada:", user.uid);
+
+            if (auth.currentUser.uid !== user.uid) {
+              throw new Error("Erro de autenticação: UID não coincide.");
+            }
+
+            const cleanFileName = foto.name.replace(/\s+/g, "_").replace(/[^a-zA-Z0-9._-]/g, "");
+            const storagePath = `fotosPerfis/${user.uid}_${cleanFileName}`;
+            const storageRef = storage.ref(storagePath);
+
+            console.log("Caminho no storage:", storagePath);
+
+            await storageRef.put(foto);
+            const fotoURL = await storageRef.getDownloadURL();
+
+            console.log("A guardar no Firestore com UID:", user.uid);
+
+            await db.collection("Utilizadores").doc(user.uid).set({
+              nome,
+              email,
+              morada,
+              telemovel,
+              dataNascimento: idade,
+              tipo: tipoConta,
+              fotoURL,
+              criadoEm: firebase.firestore.FieldValue.serverTimestamp(),
+            });
+
+            alert("Conta criada com sucesso!");
+            window.location.href = "https://projeto-final-fcf92.web.app/Homepage/homepage.html";
+          } catch (error) {
+            console.error("Erro ao criar conta:", error);
+            if (error.code === "auth/email-already-in-use") {
+              alert("Este email já está em uso. Usa outro ou faz login.");
+            } else if (error.code === "permission-denied") {
+              alert("Sem permissões para gravar os dados. Verifica as regras do Firestore.");
+            } else {
+              alert("Erro ao criar conta: " + error.message);
+            }
+          } finally {
+            form.querySelector("button").disabled = false;
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  height: 100vh;
+}
+main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+body {
+  background-color: #7398A6;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  position: absolute;
+  top: 0px;
+  width: 100%;
+  text-align: center;
+  z-index: 10;
+}
+
+.topo {
+  background-color: #7398A6; 
+  padding: 0px;
+  width: 100%;
+  height: auto;
+  margin: 40px auto; 
+  border: 1px solid white;
+  text-align: center;
+  border-top: 0cm;
+  margin-bottom: 30px;
+}
+
+.logo {
+  font-family: 'IM FELL Great Primer SC', serif;
+  font-size: 36px;
+  color: white;
+  font-weight: lighter;
+  margin: 0;
+}
+
+  
+.form-container {
+    background-color: #d1d5d8;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0.2,0.3);
+    width: 300px;
+    margin-bottom: 200px;
+    margin-top: 190px;
+}
+  
+form{
+    display: flex;
+    flex-direction: column;
+}
+  
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="date"] {
+    padding: 10px;
+    margin-bottom: 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: large;
+  }
+  
+input[type="text"]::placeholder,
+input[type="email"]::placeholder,
+input[type="password"]::placeholder {
+    color: #777;
+  }
+  
+.role-select {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 12px;
+  }
+  
+.role-select label {
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+  
+.upload-info {
+    font-size: 12px;
+    text-align: left;
+    margin-bottom: 15px;
+  }
+  
+.upload-info a {
+    color: #0a4e78;
+    text-decoration: underline;
+  }
+  
+button {
+    background-color: white;
+    color: black;
+    font-size: 16px;
+    padding: 10px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  
+button:hover {
+    transform: scale(1.02);
+    background-color: #88a6b0;
+}
+button#google-login-btn {
+    width: 300px;
+    font-size: 16px;
+    padding: 10px;
+    background-color: #ffffff;
+    color: #444;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0px 1px 2px rgba(0,0,0,0.1);
+    transition: background-color 0.3s ease;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+button#google-login-btn:hover {
+    transform: scale(1.02);
+    background-color: #88a6b0;
+}
+
+
+footer, .footer {
+    font-family: 'IM FELL Great Primer SC', serif;
+    font-weight: lighter;
+    background-color: #7398A6;
+    color: white;
+    text-align: left;
+    border-top: 1px solid white;
+}
+
+.footer_icons{
+    text-align: right;
+}
+.footer_icons a {
+    text-decoration: none;
+}
+.footer_icons img {
+    text-decoration: none;
+    height: 30px;
+    width: auto;
+    object-fit: contain;
+}

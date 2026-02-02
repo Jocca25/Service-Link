@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>Service Link</title>
+  <link rel="stylesheet" href="../css/homepage.css">
+
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+
+  <header class="topo">
+    <div class="logo-box">
+      <h1 class="logo">Service Link</h1>
+    </div>
+  </header>
+<main>
+    <body>
+        <div class="perfil">
+          <img id="imagem" src="" alt="Foto do trabalhador">
+          <h2 id="nome"></h2>
+          <h3 id="profissao"></h3>
+          <p id="bio"></p>
+        </div>
+      </body>      
+</main>
+<footer class="footer">
+  <h2>Os Nossos serivços</h2>
+  <h4>Sobre nós</h4>
+  <h4>Perguntas Frequentes</h4>
+  <h4>Política de Privacidade</h4>
+  <h4>Política de Devoluções</h4>
+  <h4>Termos de Serviço</h4>
+  <div class="footer_icons">
+      <a href="https://www.mbway.pt" target="_blank">
+          <img src="../img/Logo_MBWay.svg.png" alt="Logo_MBWay" class="footer-img">
+        </a>
+        <a href="https://www.paypal.com/pt/home" target="_blank">
+          <img src="../img/payment-platform-paypal.png" alt="Logo_paypal" class="footer-img">
+        </a>
+        <a href="https://www.mastercard.pt/pt-pt.html" target="_blank">
+          <img src="../img/mastercard-symbol-03.jpg" alt="Logo_mastercard" class="footer-img">
+        </a>
+        <a href="https://www.visa.pt" target="_blank">
+          <img src="../img/visa-icon-2048x1313-o6hi8q5l.png" alt="Logo_visa" class="footer-img">
+        </a>
+  </div>
+</footer> 
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  
+    const firebaseConfig = {
+      // ...sua config
+    };
+  
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+  
+    // Pegar ID da URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const trabalhadorId = urlParams.get('id');
+  
+    async function carregarPerfil() {
+      const docRef = doc(db, "trabalhadores", trabalhadorId);
+      const docSnap = await getDoc(docRef);
+  
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+  
+        // Popular no HTML
+        document.getElementById("nome").innerText = data.nome;
+        document.getElementById("profissao").innerText = data.profissao;
+        document.getElementById("bio").innerText = data.bio;
+        document.getElementById("imagem").src = data.imagemURL;
+      } else {
+        alert("Perfil não encontrado");
+      }
+    }
+  
+    carregarPerfil();
+  </script>
+  
+</body>
+</html>
